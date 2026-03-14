@@ -3,10 +3,31 @@
   "name": "Lecture Screenshot to PDF",
   "version": "2.0",
   "description": "Capture lecture screenshots one by one and export them as a PDF automatically.",
-  "permissions": ["activeTab", "tabs", "storage", "unlimitedStorage"],
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "unlimitedStorage",
+    "downloads",
+    "contextMenus"
+  ],
   "action": {
     "default_popup": "popup.html",
     "default_title": "Lecture Screenshot to PDF"
+  },
+  "commands": {
+    "capture_screenshot": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+X"
+      },
+      "description": "Capture screenshot from active tab"
+    },
+    "export_pdf": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Z"
+      },
+      "description": "Export saved screenshots to PDF"
+    }
   },
   "background": {
     "service_worker": "background.js"

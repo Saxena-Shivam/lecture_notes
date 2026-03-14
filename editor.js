@@ -1,14 +1,30 @@
 let screenshots = [];
 let dragStartIndex = -1;
+let autoExportRequested = false;
 
 document.getElementById("reload").addEventListener("click", load);
 document.getElementById("export-pdf").addEventListener("click", exportPdf);
+chrome.runtime.onMessage.addListener((message) => {
+  if (message && message.type === "EXPORT_PDF_NOW") {
+    exportPdf();
+  }
+});
+
+const params = new URLSearchParams(window.location.search);
+autoExportRequested = params.get("autoExport") === "1";
+
 load();
 
 function load() {
   chrome.storage.local.get(["screenshots"], (result) => {
     screenshots = Array.isArray(result.screenshots) ? result.screenshots : [];
     render();
+
+    if (autoExportRequested) {
+      autoExportRequested = false;
+      exportPdf();
+      history.replaceState({}, "", "editor.html");
+    }
   });
 }
 
