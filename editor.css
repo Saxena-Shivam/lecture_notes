@@ -15,7 +15,11 @@
 
 body {
   margin: 0;
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family:
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
   background: linear-gradient(145deg, #ede9fe 0%, #e0e7ff 45%, #dbeafe 100%);
   color: var(--text);
 }

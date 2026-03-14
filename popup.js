@@ -129,8 +129,7 @@ function updateHint() {
   const n = screenshots.length;
   let msg;
   if (n === 0) {
-    msg =
-      "Switch to your lecture tab, then click Capture to save the current slide.";
+    msg = "Switch to your lecture tab, then Capture to save the current slide.";
   } else if (n === 1) {
     msg =
       "1 slide saved! Keep capturing more, then Export PDF when you're done.";
