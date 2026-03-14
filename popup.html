@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Lecture Notes</title>
+  </head>
+  <body>
+    <div class="popup-wrapper">
+      <!-- Header -->
+      <div class="header">
+        <div class="header-title">
+          <span class="icon">&#128248;</span>
+          <h2>Lecture Notes</h2>
+        </div>
+        <span id="count" class="badge">0 screenshots</span>
+      </div>
+
+      <!-- Instructions -->
+      <p class="hint" id="hint">
+        Open your lecture, then click <strong>Capture</strong> each time you
+        want to save a slide.
+      </p>
+
+      <!-- Thumbnail strip -->
+      <div id="thumbnails" class="thumbnails"></div>
+
+      <!-- Action buttons -->
+      <div class="actions">
+        <button id="capture" class="btn primary">
+          &#128247; Capture Screenshot
+        </button>
+        <button id="generate" class="btn success">
+          &#128196; Export as PDF
+        </button>
+        <button id="clear" class="btn danger">&#128465; Clear All</button>
+      </div>
+
+      <!-- Toast notification -->
+      <div id="toast" class="toast hidden"></div>
+    </div>
+
+    <script src="lib/jspdf.umd.min.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

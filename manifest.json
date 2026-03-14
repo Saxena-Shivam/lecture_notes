@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Lecture Screenshot to PDF",
+  "version": "2.0",
+  "description": "Capture lecture screenshots one by one and export them as a PDF automatically.",
+  "permissions": ["activeTab", "tabs", "storage", "unlimitedStorage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Lecture Screenshot to PDF"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
