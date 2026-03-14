@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Pages | Lecture Notes</title>
+    <link rel="stylesheet" href="editor.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <header class="topbar">
+        <div>
+          <h1>Page Manager</h1>
+          <p>Preview, reorder, and remove pages before exporting PDF.</p>
+        </div>
+        <div class="topbar-right">
+          <span id="count" class="pill">0 pages</span>
+          <button id="export-pdf" class="btn primary">Export PDF</button>
+          <button id="reload" class="btn ghost">Reload</button>
+        </div>
+      </header>
+
+      <section id="empty" class="empty-state hidden">
+        <h2>No screenshots yet</h2>
+        <p>Go back to the extension popup and capture lecture slides first.</p>
+      </section>
+
+      <section id="grid" class="grid"></section>
+    </main>
+
+    <script src="lib/jspdf.umd.min.js"></script>
+    <script src="editor.js"></script>
+  </body>
+</html>
