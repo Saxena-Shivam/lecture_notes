@@ -9,34 +9,29 @@
   <body>
     <div class="popup-wrapper">
       <div class="header-row">
-        <div class="title-wrap">
-          <h1 class="app-title">Lecture Notes</h1>
-          <p class="subtitle">
-            Capture slides (Ctrl+Shift+X) and export PDF notes. (Ctrl+Shift+P)
-          </p>
+        <div class="logo-row">
+          <div class="title-wrap">
+            <h1 class="app-title">SlideNotes</h1>
+            <p class="subtitle">Screenshot &rarr; PDF in seconds</p>
+          </div>
         </div>
         <span id="count" class="badge">0 pages</span>
       </div>
-
       <div class="panel">
-        <p id="hint" class="hint">
-          Open your lecture tab and click Capture for each important slide.
-        </p>
+        <p id="hint" class="hint"></p>
       </div>
-
       <div class="actions-grid">
-        <button id="capture" class="btn btn-primary">Capture</button>
-        <button id="open-editor" class="btn btn-secondary">Manage Pages</button>
-        <button id="generate" class="btn btn-success">Export PDF</button>
-        <button id="clear" class="btn btn-danger">Clear All</button>
+        <button id="capture" class="btn btn-capture">Capture</button>
+        <button id="open-editor" class="btn btn-manage">Manage</button>
+        <button id="generate" class="btn btn-export">Export PDF</button>
+        <button id="clear" class="btn btn-clear">Clear All</button>
       </div>
-
       <div id="toast" class="toast hidden"></div>
       <p class="footer-note">
-        Tip: Arrange pages in Manage Pages before export.
+        Ctrl+Shift+X &nbsp;capture &nbsp;&middot;&nbsp; Ctrl+Shift+Z
+        &nbsp;export
       </p>
     </div>
-
     <script src="lib/jspdf.umd.min.js"></script>
     <script src="popup.js"></script>
   </body>

@@ -126,10 +126,24 @@ function updateCount() {
 
 function updateHint() {
   const hint = document.getElementById("hint");
-  hint.textContent =
-    screenshots.length === 0
-      ? "Open lecture tab, then click Capture for each slide."
-      : "Manage Pages to reorder or delete slides before export.";
+  const n = screenshots.length;
+  let msg;
+  if (n === 0) {
+    msg =
+      "Switch to your lecture tab, then click Capture to save the current slide.";
+  } else if (n === 1) {
+    msg =
+      "1 slide saved! Keep capturing more, then Export PDF when you're done.";
+  } else if (n < 6) {
+    msg =
+      n +
+      " slides saved. Capture more or use Manage to reorder before exporting.";
+  } else {
+    msg =
+      n +
+      " slides ready! Hit Export PDF to download your complete lecture notes.";
+  }
+  hint.textContent = msg;
 }
 
 function showToast(message, isError = false) {

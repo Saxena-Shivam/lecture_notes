@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Lecture Screenshot to PDF",
+  "name": "SlideNotes",
   "version": "2.0",
   "description": "Capture lecture screenshots one by one and export them as a PDF automatically.",
   "permissions": [
@@ -11,9 +11,15 @@
     "downloads",
     "contextMenus"
   ],
+  "icons": {
+    "128": "SlideNotes.png"
+  },
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Lecture Screenshot to PDF"
+    "default_title": "SlideNotes",
+    "default_icon": {
+      "128": "SlideNotes.png"
+    }
   },
   "commands": {
     "capture_screenshot": {
