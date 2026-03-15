@@ -2,6 +2,11 @@
 
 const MENU_CAPTURE = "lecture_capture";
 const MENU_EXPORT = "lecture_export_pdf";
+const CAPTURE_COOLDOWN_MS = 700;
+const CAPTURE_QUOTA_WAIT_MS = 1200;
+
+let captureInProgress = false;
+let lastCaptureAt = 0;
 
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === "install") {
@@ -22,7 +27,7 @@ chrome.commands.onCommand.addListener(async (command) => {
     if (command === "capture_screenshot") {
       const windowId = await getActiveWindowId();
       if (typeof windowId === "number") {
-        await captureScreenshotFromTab(windowId);
+        await handleCaptureRequest(windowId);
       } else {
         await flashBadge("TAB", "#b91c1c");
       }
@@ -43,7 +48,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
           ? tab.windowId
           : await getActiveWindowId();
       if (typeof windowId === "number") {
-        await captureScreenshotFromTab(windowId);
+        await handleCaptureRequest(windowId);
       } else {
         await flashBadge("TAB", "#b91c1c");
       }
@@ -77,11 +82,55 @@ async function getActiveWindowId() {
   return tab && typeof tab.windowId === "number" ? tab.windowId : null;
 }
 
+async function handleCaptureRequest(windowId) {
+  const now = Date.now();
+
+  if (captureInProgress || now - lastCaptureAt < CAPTURE_COOLDOWN_MS) {
+    await flashBadge("WAIT", "#f59e0b");
+    return;
+  }
+
+  captureInProgress = true;
+  try {
+    const captured = await captureScreenshotFromTab(windowId);
+    if (captured) {
+      lastCaptureAt = Date.now();
+    }
+  } finally {
+    captureInProgress = false;
+  }
+}
+
 async function captureScreenshotFromTab(windowId) {
-  const dataUrl = await chrome.tabs.captureVisibleTab(windowId, {
-    format: "jpeg",
-    quality: 92,
-  });
+  let dataUrl;
+
+  try {
+    dataUrl = await chrome.tabs.captureVisibleTab(windowId, {
+      format: "jpeg",
+      quality: 92,
+    });
+  } catch (error) {
+    if (!isCaptureQuotaError(error)) {
+      throw error;
+    }
+
+    // Chrome enforces a strict per-second capture quota. Wait once, then retry.
+    await flashBadge("WAIT", "#f59e0b");
+    await sleep(CAPTURE_QUOTA_WAIT_MS);
+
+    try {
+      dataUrl = await chrome.tabs.captureVisibleTab(windowId, {
+        format: "jpeg",
+        quality: 92,
+      });
+    } catch (retryError) {
+      if (!isCaptureQuotaError(retryError)) {
+        throw retryError;
+      }
+      await flashBadge("WAIT", "#f59e0b");
+      return false;
+    }
+  }
 
   const result = await chrome.storage.local.get(["screenshots"]);
   const screenshots = Array.isArray(result.screenshots)
@@ -91,6 +140,16 @@ async function captureScreenshotFromTab(windowId) {
   await chrome.storage.local.set({ screenshots });
 
   await flashBadge(String(Math.min(screenshots.length, 999)), "#0f766e");
+  return true;
+}
+
+function isCaptureQuotaError(error) {
+  const message = String((error && error.message) || error || "");
+  return message.includes("MAX_CAPTURE_VISIBLE_TAB_CALLS_PER_SECOND");
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function exportStoredScreenshotsToPdf() {
